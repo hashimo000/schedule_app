@@ -18,7 +18,7 @@ class TimetableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('私の時間割'),
+        title: Text('私の時間'),
       ),
       body: Timetable(),
     );
