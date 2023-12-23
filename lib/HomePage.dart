@@ -65,7 +65,7 @@ class TimetableGrid extends StatelessWidget {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: gridStateColumns,
-        childAspectRatio: 3 / 2,
+        childAspectRatio: 2/3,
       ),
       itemCount: gridStateRows * gridStateColumns,
       itemBuilder: (context, index) {
@@ -82,7 +82,7 @@ class TimetableGrid extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                ['時', '月', '火', '水', '木', '金', '土'][y],
+                ['時間', '月', '火', '水', '木', '金', '土'][y],
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
