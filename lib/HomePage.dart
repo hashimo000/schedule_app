@@ -100,9 +100,9 @@ class TimetableGrid extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: const EdgeInsets.only(right: 17.0),
                 child: Text(
-                  "${9 + x}:59", // 9時からの時間を表示
+                  "${0 + x}", //時間割 を表示
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
