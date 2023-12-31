@@ -120,7 +120,7 @@ class TimetableGrid extends StatelessWidget {
                 border: Border.all(color: Colors.grey),
               ),
               child: Center(
-                child: Text('授業名など'),
+                child: Text('授業名'),
               ),
             ),
           );
