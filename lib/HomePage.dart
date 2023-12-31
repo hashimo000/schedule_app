@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'DetailScreen .dart';
+
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
@@ -113,12 +115,21 @@ class TimetableGrid extends StatelessWidget {
           );
         } else {
           // 通常のグリッドセルを生成
-          return Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-            ),
-            child: Center(
-              child: Text(''),
+          return InkWell(
+            onTap: () {
+              // ここで画面遷移する
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DetailScreen()), // 画面遷移先のウィジェット
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Center(
+                child: Text('授業名など'),
+              ),
             ),
           );
         }
