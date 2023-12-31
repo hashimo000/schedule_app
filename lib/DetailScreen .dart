@@ -7,10 +7,10 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: Text('授業詳細'),
+        title: const Text('授業の追加情報'),
       ),
-      body: Center(
-        child: Text('ここに授業の詳細情報を表示'),
+      body: const Center(
+        child:Text('ここに授業の詳細情報を表示'),
       ),
     );
   }
