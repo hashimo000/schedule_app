@@ -6,25 +6,17 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-  
-      body:  MyTimetableApp(),
+    return MaterialApp(
+       theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home:  TimetableScreen(),
     );
   }
 }
 
-class MyTimetableApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Timetable App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TimetableScreen(),
-    );
-  }
-}
+
+
 
 class TimetableScreen extends StatelessWidget {
   @override
