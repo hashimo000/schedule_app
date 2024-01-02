@@ -28,19 +28,19 @@ class TimetableScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              // 設定アイコンの動作をここに追加
+             
             },
           ),
           IconButton(
             icon: Icon(Icons.arrow_downward),
             onPressed: () {
-              // ダウンロードアイコンの動作をここに追加
+           
             },
           ),
           IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {
-              // メニューアイコンの動作をここに追加
+              
             },
           ),
         ],
