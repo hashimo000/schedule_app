@@ -9,10 +9,11 @@ environment:
 
 
 dependencies:
+  riverpod: ^2.4.9
   flutter:
     sdk: flutter
   timetable_view: ^0.3.0
-
+ 
 
   cupertino_icons: ^1.0.2
 
