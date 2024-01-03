@@ -54,6 +54,7 @@ class TimetableScreen extends ConsumerWidget {
 class TimetableGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final counter = ref.watch(counterProvider);
     int gridStateRows = 8; // 行数
     int gridStateColumns = 7; // 列数（曜日 + 時間列）
 
@@ -121,7 +122,10 @@ class TimetableGrid extends ConsumerWidget {
                 border: Border.all(color: Colors.grey),
               ),
               child: Center(
-                child: Text('授業名'),
+                child: Text(
+                '欠席: $counter',
+                style: TextStyle(fontSize: 15),
+              ),
               ),
             ),
           );
