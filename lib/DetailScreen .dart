@@ -29,11 +29,18 @@ class DetailScreen extends ConsumerWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+                  border:OutlineInputBorder(),
+                  labelText:"授業名"
+                ),
+              ),
+             
               Text(
                 '欠席回数: $counter',
                 style: TextStyle(fontSize: 24),
               ),
-              // ... その他のウィジェット ...
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
