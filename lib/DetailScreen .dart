@@ -30,7 +30,7 @@ class DetailScreen extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                'カウンター値: $counter',
+                '欠席回数: $counter',
                 style: TextStyle(fontSize: 24),
               ),
               // ... その他のウィジェット ...
