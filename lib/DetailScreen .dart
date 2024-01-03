@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// Counterの状態を管理するStateNotifier
+class CounterNotifier extends StateNotifier<int> {
+  CounterNotifier() : super(0);
 
-class DetailScreen extends StatefulWidget {
-  const DetailScreen({super.key});
-
-  @override
-  _DetailScreenState createState() => _DetailScreenState();
+  void increment() => state++;
+  void decrement() => state--;
+  void reset() => state = 0;
 }
 
-class _DetailScreenState extends State<DetailScreen> {
-  int _counter = 0;
+// CounterNotifierを提供するProvider
+final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
+  return CounterNotifier();
+});
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  void _decrementCounter() {
-    setState(() {
-      _counter--;
-    });
-  }
-
-  void _resetCounter() {
-    setState(() {
-      _counter = 0;
-    });
-  }
-
+// DetailScreenクラス内の変更点
+class DetailScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final counter = ref.watch(counterProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('授業の追加情報'),
@@ -38,41 +27,28 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisSize: MainAxisSize.min, // Columnを中心に配置
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              TextField(
-                decoration: InputDecoration(
-                  labelText: '授業名',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8), // テキストフィールド間のスペース
-              TextField(
-                decoration: InputDecoration(
-                  labelText: '教室',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              Text("欠席回数"),
               Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headline4,
+                'カウンター値: $counter',
+                style: TextStyle(fontSize: 24),
               ),
+              // ... その他のウィジェット ...
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FloatingActionButton(
-                    onPressed: _incrementCounter,
+                    onPressed: () => ref.read(counterProvider.notifier).increment(),
                     tooltip: 'Increment',
                     child: Icon(Icons.add),
                   ),
                   FloatingActionButton(
-                    onPressed: _decrementCounter,
+                    onPressed: () => ref.read(counterProvider.notifier).decrement(),
                     tooltip: 'Decrement',
                     child: Icon(Icons.remove),
                   ),
                   FloatingActionButton(
-                    onPressed: _resetCounter,
+                    onPressed: () => ref.read(counterProvider.notifier).reset(),
                     tooltip: 'Reset',
                     child: Icon(Icons.refresh),
                   ),
