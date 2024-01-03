@@ -34,7 +34,6 @@ class DetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final counter = ref.watch(counterProvider);
-    final classname = ref.watch(classnameProvider); //状態を可視化
     return Scaffold(
       appBar: AppBar(
         title: const Text('授業の追加情報'),
