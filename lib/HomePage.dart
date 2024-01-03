@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'DetailScreen .dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
        theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -18,9 +19,9 @@ class MyHomePage extends StatelessWidget {
 
 
 
-class TimetableScreen extends StatelessWidget {
+class TimetableScreen extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('時間割'),
@@ -50,9 +51,9 @@ class TimetableScreen extends StatelessWidget {
   }
 }
 
-class TimetableGrid extends StatelessWidget {
+class TimetableGrid extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     int gridStateRows = 8; // 行数
     int gridStateColumns = 7; // 列数（曜日 + 時間列）
 
@@ -112,7 +113,7 @@ class TimetableGrid extends StatelessWidget {
               // ここで画面遷移する
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DetailScreen()), // 画面遷移先のウィジェット
+                MaterialPageRoute(builder: (context) =>  DetailScreen()), // 画面遷移先のウィジェット
               );
             },
             child: Container(
