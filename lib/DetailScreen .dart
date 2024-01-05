@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';// 入力制限用
 // Counterの状態を管理するStateNotifier
 class CounterNotifier extends StateNotifier<int> {
   CounterNotifier() : super(0);
@@ -74,6 +75,9 @@ class DetailScreen extends ConsumerWidget {
               TextField(
                 controller: textEditingController..text = cellData.classname,
                 decoration: InputDecoration(border: OutlineInputBorder(), labelText: "授業名"),
+                inputFormatters: [
+                LengthLimitingTextInputFormatter(12),
+              ],
               ),
               ElevatedButton(
                 onPressed: () {
