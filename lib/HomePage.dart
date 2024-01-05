@@ -129,7 +129,8 @@ class TimetableGrid extends ConsumerWidget {
             ),
         ));
         }
-      },
+        return Container(); // 空のコンテナまたは他の適切なウィジェットを返す
+     },
     );
   }
 }
