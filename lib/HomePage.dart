@@ -15,10 +15,6 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 }
-
-
-
-
 class TimetableScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,8 +50,6 @@ class TimetableScreen extends ConsumerWidget {
 class TimetableGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final counter = ref.watch(counterProvider);
-    final classname = ref.watch(classnameProvider);
     int gridStateRows = 8; // 行数
     int gridStateColumns = 7; // 列数（曜日 + 時間列）
 
@@ -108,31 +102,32 @@ class TimetableGrid extends ConsumerWidget {
               ),
             ),
           );
-        } else {
-          // 通常のグリッドセルを生成
-          return InkWell(
-            onTap: () {
-              // ここで画面遷移する
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>  DetailScreen()), // 画面遷移先のウィジェット
-              );
-            },
+        } if (x > 0 && y > 0) {
+        // 通常のグリッドセルを生成
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailScreen(cellIndex: index),
+              ),
+            );
+          },
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
               ),
-              
-              child: Column(
+               child: Consumer(builder: (context, ref, _) {
+              final cellData = ref.watch(timetableDataProvider)[index];
+              return Column(
                 children: <Widget>[
-                  Text(classname),
-                  Text('欠席: $counter',
-                       style: TextStyle(fontSize: 15),
-                ),
-                ]
-              ),
+                  Text(cellData.classname),
+                  Text('欠席: ${cellData.counter}', style: TextStyle(fontSize: 15)),
+                ],
+              );
+            }
             ),
-          );
+        ));
         }
       },
     );
