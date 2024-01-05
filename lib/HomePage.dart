@@ -122,7 +122,7 @@ class TimetableGrid extends ConsumerWidget {
               return Column(
                 children: <Widget>[
                   Text(cellData.classname),
-                  Text('欠席: ${cellData.counter}', style: TextStyle(fontSize: 15)),
+                  Text('❤️: ${cellData.counter}', style: TextStyle(fontSize: 15)),
                 ],
               );
             }

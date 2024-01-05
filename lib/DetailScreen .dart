@@ -11,7 +11,7 @@ class CounterNotifier extends StateNotifier<int> {
 class TimetableCellData {
   int counter;
   String classname;
-  TimetableCellData({this.counter = 0, this.classname = '初期値'});
+  TimetableCellData({this.counter = 0, this.classname = ''});
 }
 // ClassNameの状態を管理するStateNotifier
 class ClassNameNotifier extends StateNotifier<String> {
