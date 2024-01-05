@@ -8,7 +8,11 @@ class CounterNotifier extends StateNotifier<int> {
   void decrement() => state--;
   void reset() => state = 0;
 }
-
+class TimetableCellData {
+  int counter;
+  String classname;
+  TimetableCellData({this.counter = 0, this.classname = '初期値'});
+}
 // ClassNameの状態を管理するStateNotifier
 class ClassNameNotifier extends StateNotifier<String> {
   // コンストラクタで初期状態を設定
@@ -19,6 +23,17 @@ class ClassNameNotifier extends StateNotifier<String> {
     state = newText; //状態を更新
      }
 }
+class TimetableDataNotifier extends StateNotifier<List<TimetableCellData>> {
+  TimetableDataNotifier() : super(List.generate(56, (_) => TimetableCellData())); // 8行7列のグリッドの場合
+
+  void updateCellData(int index, TimetableCellData data) {
+    state = [
+      ...state.sublist(0, index),
+      data,
+      ...state.sublist(index + 1),
+    ];
+  }
+}
 
 // CounterNotifierを提供するProvider
 final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
@@ -28,16 +43,28 @@ final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
 final classnameProvider = StateNotifierProvider<ClassNameNotifier, String>((ref) {
   return ClassNameNotifier();
 });
+
+final timetableDataProvider = StateNotifierProvider<TimetableDataNotifier, List<TimetableCellData>>((ref) {
+  return TimetableDataNotifier();
+});
+
 // DetailScreenクラス内の変更点
 class DetailScreen extends ConsumerWidget {
+  final int cellIndex;
   final TextEditingController textEditingController = TextEditingController();
+   DetailScreen({Key? key, required this.cellIndex}) : super(key: key);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final counter = ref.watch(counterProvider);
+    
+      // StateNotifierからセルのデータを取得
+    final cellData = ref.watch(timetableDataProvider.select((state) => state[cellIndex]));
+
+    // TextFieldに初期値を設定
+    textEditingController.text = cellData.classname;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('授業の追加情報'),
-      ),
+      appBar: AppBar(title: const Text('授業の追加情報')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -45,22 +72,22 @@ class DetailScreen extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: textEditingController,//TextFieldの中身をtextEditingControllerで管理
-                decoration: InputDecoration(
-                  border:OutlineInputBorder(),
-                  labelText:"授業名"
-                ),
-                   
+                controller: textEditingController..text = cellData.classname,
+                decoration: InputDecoration(border: OutlineInputBorder(), labelText: "授業名"),
               ),
               ElevatedButton(
                 onPressed: () {
-                  ref.read(classnameProvider.notifier).updateText(textEditingController.text);//ボタン押すとtextEditingControllerの中身をclassnameProviderで管理
+                  final updatedData = TimetableCellData(
+                    counter: cellData.counter,
+                    classname: textEditingController.text,
+                  );
+                  ref.read(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
                   Navigator.pop(context);
                 },
                 child: const Text('保存'),
               ),
               Text(
-                '欠席回数: $counter',
+                '欠席回数: ${cellData.counter}',
                 style: TextStyle(fontSize: 24),
               ),
               
@@ -68,15 +95,36 @@ class DetailScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FloatingActionButton(
-                    onPressed: () => ref.read(counterProvider.notifier).increment(),
+                    onPressed: () {
+                      // セルデータのカウンターをインクリメント
+                      final updatedData = TimetableCellData(
+                        counter: cellData.counter + 1,
+                        classname: cellData.classname,
+                      );
+                      ref.watch(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                    },
                     child: Icon(Icons.add),
                   ),
                   FloatingActionButton(
-                    onPressed: () => ref.read(counterProvider.notifier).decrement(),
+                    onPressed: () {
+                      // セルデータのカウンターをデクリメント
+                      final updatedData = TimetableCellData(
+                        counter: cellData.counter > 0 ? cellData.counter - 1 : 0,
+                        classname: cellData.classname,
+                      );
+                      ref.watch(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                    },
                     child: Icon(Icons.remove),
                   ),
                   FloatingActionButton(
-                    onPressed: () => ref.read(counterProvider.notifier).reset(),
+                    onPressed: () {
+                      // セルデータのカウンターをリセット
+                      final updatedData = TimetableCellData(
+                        counter: 0,
+                        classname: cellData.classname,
+                      );
+                      ref.watch(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                    },
                     child: Icon(Icons.refresh),
                   ),
                 ],
