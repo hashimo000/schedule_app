@@ -41,5 +41,11 @@ class DbProvider{
   static Future<int> insert(Map<String, dynamic> row) async {
     final db = await database;
     return await db!.insert(tableName, row); }
+// データの取得
+  static Future<List<Map<String, dynamic>>> queryAllRows() async {
+    final db = await database;
+    return await db!.query(tableName);
+  }
 
+  
 }
