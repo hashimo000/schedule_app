@@ -34,7 +34,17 @@ class TimetableDataNotifier extends StateNotifier<List<TimetableCellData>> {
       ...state.sublist(index + 1),
     ];
   }
+  void resetCellData(int index) {
+  state = [
+    ...state.sublist(0, index),
+    TimetableCellData(), // 初期化されたTimetableCellDataオブジェクト
+    ...state.sublist(index + 1),
+  ];
 }
+
+}
+
+
 
 // CounterNotifierを提供するProvider
 final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
@@ -65,7 +75,9 @@ class DetailScreen extends ConsumerWidget {
     textEditingController.text = cellData.classname;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('授業の追加情報')),
+      appBar: AppBar(title: const Text('授業の追加情報'),
+        
+              ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -133,6 +145,17 @@ class DetailScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+              ElevatedButton(
+                 onPressed: () {
+                 // セルデータをリセット
+                 ref.read(timetableDataProvider.notifier).resetCellData(cellIndex);
+                 Navigator.pop(context);
+                  },
+                  child: const Text('削除'),
+                  style: ElevatedButton.styleFrom(
+                 backgroundColor: Colors.red, // ボタンの背景色を赤に設定
+                 ),
+                 ),
             ],
           ),
         ),
