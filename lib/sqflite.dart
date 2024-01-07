@@ -37,5 +37,9 @@ class DbProvider{
     return database;
   }
 }
-  
+  // データの挿入
+  static Future<int> insert(Map<String, dynamic> row) async {
+    final db = await database;
+    return await db!.insert(tableName, row); }
+
 }
