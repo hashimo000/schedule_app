@@ -47,5 +47,11 @@ class DbProvider{
     return await db!.query(tableName);
   }
 
+  // データの更新
+  static Future<int> update(Map<String, dynamic> row) async {
+    final db = await database;
+    int id = row['id'];
+    return await db!.update(tableName, row, where: 'id = ?', whereArgs: [id]); }
+
   
 }
