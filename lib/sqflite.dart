@@ -53,5 +53,9 @@ class DbProvider{
     int id = row['id'];
     return await db!.update(tableName, row, where: 'id = ?', whereArgs: [id]); }
 
-  
+  // データの削除
+  static Future<int> delete(int id) async {
+    final db = await database;
+    return await db!.delete(tableName, where: 'id = ?', whereArgs: [id]);
+  }
 }
