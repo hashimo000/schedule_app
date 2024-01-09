@@ -1,23 +1,41 @@
 import 'package:flutter/material.dart';
 import 'DetailScreen .dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class MyHomePage extends ConsumerWidget {
+import 'package:schedule/sqflite.dart';
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
-       theme: ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  TimetableScreen(),
+      home: TimetableScreen(),
     );
   }
 }
-class TimetableScreen extends ConsumerWidget {
+
+class TimetableScreen extends StatefulWidget {
+  const TimetableScreen({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _TimetableScreenState createState() => _TimetableScreenState();
+}
+class _TimetableScreenState extends State<TimetableScreen> {
+  Future<void> initDB() async {
+    await DbProvider.initDB();
+    setState(() {}); 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+  
     return Scaffold(
       appBar: AppBar(
         title: Text('時間割'),
@@ -50,6 +68,7 @@ class TimetableScreen extends ConsumerWidget {
 class TimetableGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+ 
     int gridStateRows = 8; // 行数
     int gridStateColumns = 7; // 列数（曜日 + 時間列）
 
