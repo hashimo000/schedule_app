@@ -3,21 +3,17 @@ import 'package:path/path.dart';
 
 class DbProvider{
 
-  static Database? database;
+  static Database? _database;
   static final String tableName ="classwork";
 
 
   // データベースのgetter: 初回アクセス時にDBをオープン
-  static Future<Database> get _database async {
-    if (database != null) return database!;
-    database = await initDB();
-    return database!;
+static Future<Database> get database async {
+  if (_database == null) {
+    _database = await initDB();
   }
-    // データベースの初期化
-  static initDB() async {
-    String path = join(await getDatabasesPath(), 'classwork.db');
-    return await openDatabase(path, version: 1, onCreate: _createTables);
-  }
+  return _database!;  // ここで_nullチェック演算子を使う前に_databaseが非nullであることを保証する
+}
     // テーブルの作成
   static Future _createTables(Database db, int version) async {
     await db.execute('''
@@ -29,33 +25,40 @@ class DbProvider{
       )
     ''');
   }
+    // データベースの初期化
+  static initDB() async {
+    String path = join(await getDatabasesPath(), 'classwork.db');
+    return await openDatabase(path, version: 1, onCreate: _createTables);
+  }
+ 
   static Future<Database?> setDb()async{
-  if(database == null){
-    database= await initDB();
-    return database;
+  if(_database == null){
+    _database= await initDB();
+    return _database;
   }else{
-    return database;
+    return _database;
   }
 }
   // データの挿入
   static Future<int> insert(Map<String, dynamic> row) async {
     final db = await database;
-    return await db!.insert(tableName, row); }
+    return await db.insert(tableName, row); }
 // データの取得
   static Future<List<Map<String, dynamic>>> queryAllRows() async {
     final db = await database;
-    return await db!.query(tableName);
+    return await db.query(tableName);
   }
 
   // データの更新
   static Future<int> update(Map<String, dynamic> row) async {
     final db = await database;
     int id = row['id'];
-    return await db!.update(tableName, row, where: 'id = ?', whereArgs: [id]); }
+    return await db.update(tableName, row, where: 'id = ?', whereArgs: [id]); }
 
   // データの削除
   static Future<int> delete(int id) async {
     final db = await database;
-    return await db!.delete(tableName, where: 'id = ?', whereArgs: [id]);
+    return await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
   }
 }
+
