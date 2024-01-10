@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
+import 'package:schedule/classwork.dart';
 class DbProvider{
 
   static Database? _database;
@@ -40,21 +41,28 @@ static Future<Database> get database async {
   }
 }
   // データの挿入
-  static Future<int> insert(Map<String, dynamic> row) async {
-    final db = await database;
-    return await db.insert(tableName, row); }
+ static Future<int> insertData(Map<String, dynamic> data) async {
+    final db = await database;  // Database オブジェクトを取得
+    return await db.insert(tableName, data);
+  }
 // データの取得
-  static Future<List<Map<String, dynamic>>> queryAllRows() async {
-    final db = await database;
-    return await db.query(tableName);
+  static Future<List<Classwork>> getData() async {
+    final List<Map<String, dynamic>> maps =await _database!.query(tableName);
+    print(maps);
+    if(maps.length == 0){
+      return[];
+    }else{
+      List<Classwork> classworkList = List.generate(maps.length, (index) => Classwork(
+        id: maps[index]["id"],
+        name: maps[index]["name"],
+        details: maps[index]["details"],
+        completed: maps[index]["completed"]== 0 ? false : true,
+         ));
+         return classworkList;
+    }
   }
 
-  // データの更新
-  static Future<int> update(Map<String, dynamic> row) async {
-    final db = await database;
-    int id = row['id'];
-    return await db.update(tableName, row, where: 'id = ?', whereArgs: [id]); }
-
+  
   // データの削除
   static Future<int> delete(int id) async {
     final db = await database;
