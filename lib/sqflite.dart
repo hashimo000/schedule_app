@@ -60,8 +60,18 @@ static Future<Database> get database async {
          return classworkList;
     }
   }
+  // データの更新
+  static Future<void> updateData(Classwork classwork) async {
+    await _database!.update(tableName,{
+      'id': classwork.id,
+      'name': classwork.name,
+      'details': classwork.details,
+      'completed': classwork.completed,
+    },where: 'id = ?',
+    whereArgs: [classwork.id],
+    );
+  }
 
-  
   // データの削除
   static Future<int> delete(int id) async {
     final db = await database;
