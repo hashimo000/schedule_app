@@ -45,18 +45,15 @@ static Future<Database> get database async {
     return await db.insert(tableName, data);
   }
 // データの取得
-  static Future<List<Classwork>> getData() async {
+  static Future<List<Map<String, dynamic> >> getData() async {
     final List<Map<String, dynamic>> maps =await _database!.query(tableName);
+    print(maps);
     print(maps);
     if(maps.length == 0){
       return[];
     }else{
-      List<Classwork> classworkList = List.generate(maps.length, (index) => Classwork(
-        id: maps[index]["id"],
-        name: maps[index]["name"],
-        details: maps[index]["details"],
-        completed: maps[index]["completed"]== 0 ? false : true,
-         ));
+      List<Map<String, dynamic>> classworkList = List.generate(maps.length, (index) => 
+         Map<String, dynamic>.from(maps[index]));
          return classworkList;
     }
   }
@@ -65,7 +62,7 @@ static Future<Database> get database async {
     await _database!.update(tableName,{
       'id': classwork.id,
       'name': classwork.name,
-      'details': classwork.details,
+
       'completed': classwork.completed,
     },where: 'id = ?',
     whereArgs: [classwork.id],
@@ -78,4 +75,3 @@ static Future<Database> get database async {
     return await db.delete(tableName, where: 'id = ?', whereArgs: [id]);
   }
 }
-

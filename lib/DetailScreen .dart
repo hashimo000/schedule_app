@@ -129,6 +129,7 @@ class DetailScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FloatingActionButton(
+                    heroTag: null,
                     onPressed: () {
                       // セルデータのカウンターをインクリメント
                       final updatedData = TimetableCellData(
@@ -140,6 +141,7 @@ class DetailScreen extends ConsumerWidget {
                     child: Icon(Icons.add),
                   ),
                   FloatingActionButton(
+                    heroTag: null,
                     onPressed: () {
                       // セルデータのカウンターをデクリメント
                       final updatedData = TimetableCellData(
@@ -151,7 +153,9 @@ class DetailScreen extends ConsumerWidget {
                     child: Icon(Icons.remove),
                   ),
                   FloatingActionButton(
+                    heroTag: null,
                     onPressed: () {
+                      
                       // セルデータのカウンターをリセット
                       final updatedData = TimetableCellData(
                         counter: 0,
