@@ -10,7 +10,6 @@ class Classwork{
     return {
       'id': id,
       'name': name,
-     
       'completed': completed,
     };
   }
