@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'DetailScreen .dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:schedule/sqflite.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -28,10 +27,7 @@ class TimetableScreen extends StatefulWidget {
   _TimetableScreenState createState() => _TimetableScreenState();
 }
 class _TimetableScreenState extends State<TimetableScreen> {
-  Future<void> initDB() async {
-    await DbProvider.initDB();
-    setState(() {}); 
-  }
+
 
   @override
   Widget build(BuildContext context) {
