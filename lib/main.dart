@@ -1,6 +1,7 @@
 import 'package:schedule/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:schedule/database.dart';// 入力制限用
 void main() {
   runApp(const ProviderScope(
     child: MyApp()
