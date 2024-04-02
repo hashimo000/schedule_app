@@ -71,7 +71,8 @@ void dispose() {
     final localCounter = StateProvider<int>((ref) => cellData.counter);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('授業の追加情報')),
+      appBar: AppBar(title: const Text('授業詳細')
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
