@@ -1,7 +1,6 @@
 import 'package:schedule/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:schedule/database.dart';
 void main() {
   runApp(const ProviderScope(
     child: MyApp()

@@ -109,17 +109,6 @@ class DetailScreen extends ConsumerWidget {
                 LengthLimitingTextInputFormatter(12),
               ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  final updatedData = TimetableCellData(
-                    counter: cellData.counter,
-                    classname: textEditingController.text,
-                  );
-                  ref.read(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
-                  Navigator.pop(context);
-                },
-                child: const Text('保存'),
-              ),
               Text(
                 '欠席回数: ${cellData.counter}',
                 style: TextStyle(fontSize: 24),
@@ -166,6 +155,17 @@ class DetailScreen extends ConsumerWidget {
                     child: Icon(Icons.refresh),
                   ),
                 ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final updatedData = TimetableCellData(
+                    counter: cellData.counter,
+                    classname: textEditingController.text,
+                  );
+                  ref.read(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                  Navigator.pop(context);
+                },
+                child: const Text('保存'),
               ),
               ElevatedButton(
                  onPressed: () {
