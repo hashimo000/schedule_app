@@ -44,6 +44,18 @@ class _TimetableScreenState extends State<TimetableScreen> {
   backgroundColor: Color.fromARGB(255, 246, 108, 2), 
   ),
       body: TimetableGrid(),
+       bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'ホーム',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.contacts),
+            label: 'お問合せ',
+          ),
+        ],
+      ),
     );
   }
 }
