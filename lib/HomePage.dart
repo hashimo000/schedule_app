@@ -37,11 +37,11 @@ class _TimetableScreenState extends State<TimetableScreen> {
        title: const Text(
               '落単回避アプリ',
        style: TextStyle(
-      fontSize: 20, // フォントサイズを20に設定
-      fontWeight: FontWeight.bold, // フォントを太く設定
+      fontSize: 20,
+      fontWeight: FontWeight.bold, 
     ),
   ),
-  backgroundColor: Color.fromARGB(255, 246, 108, 2), // AppBarの背景色を設定
+  backgroundColor: Color.fromARGB(255, 246, 108, 2), 
   ),
       body: TimetableGrid(),
     );

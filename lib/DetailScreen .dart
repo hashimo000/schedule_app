@@ -71,7 +71,14 @@ void dispose() {
     final localCounter = StateProvider<int>((ref) => cellData.counter);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('授業詳細')
+      appBar: AppBar(
+        title: const Text(
+          '授業詳細',
+          style: TextStyle(
+      fontSize: 20, // フォントサイズを20に設定
+      fontWeight: FontWeight.bold, // フォントを太く設定
+    ),),
+    backgroundColor: Color.fromARGB(255, 246, 108, 2),
       ),
       body: Center(
         child: Padding(
