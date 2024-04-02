@@ -70,7 +70,7 @@ class DetailScreen extends ConsumerWidget {
                   FloatingActionButton(
                     heroTag: "btn1",
                     onPressed: () { 
-                     ref.read(localCounter.notifier).update((state) => state + 1);
+                     ref.read(localCounter.notifier).update((state) => state < 5 ? state + 1 : 5);
                     },
                     child: Icon(Icons.add),
                   ),
