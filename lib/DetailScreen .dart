@@ -1,29 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';// 入力制限用
-// Counterの状態を管理するStateNotifier
-class CounterNotifier extends StateNotifier<int> {
-  CounterNotifier() : super(0);
-
-  void increment() => state++;
-  void decrement() => state--;
-  void reset() => state = 0;
-}
 class TimetableCellData {
   int counter;
   String classname;
   TimetableCellData({this.counter = 0, this.classname = ''});
 }
-// ClassNameの状態を管理するStateNotifier
-class ClassNameNotifier extends StateNotifier<String> {
-  // コンストラクタで初期状態を設定
-  ClassNameNotifier() : super('初期値');
 
-  // 状態を更新するメソッド
-  void updateText(String newText) {
-    state = newText; //状態を更新
-     }
-}
 class TimetableDataNotifier extends StateNotifier<List<TimetableCellData>> {
   TimetableDataNotifier() : super(List.generate(56, (_) => TimetableCellData())); // 8行7列のグリッドの場合
 
@@ -41,20 +24,7 @@ class TimetableDataNotifier extends StateNotifier<List<TimetableCellData>> {
     ...state.sublist(index + 1),
   ];
 }
-
 }
-
-
-
-// CounterNotifierを提供するProvider
-final counterProvider = StateNotifierProvider<CounterNotifier, int>((ref) {
-  return CounterNotifier();
-});
-// ClassNameNotifierを提供するProvider
-final classnameProvider = StateNotifierProvider<ClassNameNotifier, String>((ref) {
-  return ClassNameNotifier();
-});
-
 final timetableDataProvider = StateNotifierProvider<TimetableDataNotifier, List<TimetableCellData>>((ref) {
   return TimetableDataNotifier();
 });
@@ -63,20 +33,18 @@ final timetableDataProvider = StateNotifierProvider<TimetableDataNotifier, List<
 class DetailScreen extends ConsumerWidget {
   final int cellIndex;
   final TextEditingController textEditingController = TextEditingController();
-   DetailScreen({Key? key, required this.cellIndex}) : super(key: key);
+  DetailScreen({Key? key, required this.cellIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    
-      // StateNotifierからセルのデータを取得
     final cellData = ref.watch(timetableDataProvider.select((state) => state[cellIndex]));
+    textEditingController.text = cellData.classname; // 初期値を設定
 
-    // TextFieldに初期値を設定
-    textEditingController.text = cellData.classname;
+    // 欠席回数のローカル状態を管理するためのStateProviderを作成
+    final localCounter = StateProvider<int>((ref) => cellData.counter);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('授業の追加情報'),
-              ),
+      appBar: AppBar(title: const Text('授業の追加情報')),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -84,54 +52,39 @@ class DetailScreen extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
-                controller: textEditingController..text = cellData.classname,
+                controller: textEditingController,
                 decoration: InputDecoration(border: OutlineInputBorder(), labelText: "授業名"),
-                inputFormatters: [
-                LengthLimitingTextInputFormatter(12),
-              ],
+                inputFormatters: [LengthLimitingTextInputFormatter(12)],
               ),
-              Text(
-                '欠席回数: ${cellData.counter}',
-                style: TextStyle(fontSize: 24),
+              Consumer(
+                builder: (context, ref, _) {
+                  // 欠席回数のローカル状態を表示
+                  final counter = ref.watch(localCounter);
+                  return Text('欠席回数: $counter', style: TextStyle(fontSize: 24));
+                },
               ),
-              
+              // 以下のRowとFloatingActionButtonは、ローカル状態のカウンターを更新するように変更
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   FloatingActionButton(
-                    heroTag: null,
-                    onPressed: () {
-                      // セルデータのカウンターをインクリメント
-                      final updatedData = TimetableCellData(
-                        counter: cellData.counter + 1,
-                        classname: cellData.classname,
-                      );
-                      ref.watch(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                    heroTag: "btn1",
+                    onPressed: () { 
+                     ref.read(localCounter.notifier).update((state) => state + 1);
                     },
                     child: Icon(Icons.add),
                   ),
                   FloatingActionButton(
-                    heroTag: null,
+                    heroTag: "btn2",
                     onPressed: () {
-                      // セルデータのカウンターをデクリメント
-                      final updatedData = TimetableCellData(
-                        counter: cellData.counter > 0 ? cellData.counter - 1 : 0,
-                        classname: cellData.classname,
-                      );
-                      ref.watch(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
-                    },
+                    ref.read(localCounter.notifier).update((state) => state > 0 ? state - 1 : 0);
+                   },
                     child: Icon(Icons.remove),
                   ),
                   FloatingActionButton(
-                    heroTag: null,
+                    heroTag: "btn3",
                     onPressed: () {
-                      
-                      // セルデータのカウンターをリセット
-                      final updatedData = TimetableCellData(
-                        counter: 0,
-                        classname: cellData.classname,
-                      );
-                      ref.watch(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                     ref.read(localCounter.notifier).update((state) => 0);
                     },
                     child: Icon(Icons.refresh),
                   ),
@@ -139,8 +92,9 @@ class DetailScreen extends ConsumerWidget {
               ),
               ElevatedButton(
                 onPressed: () {
+                  // 保存ボタンを押したときに、ローカル状態をグローバル状態に反映
                   final updatedData = TimetableCellData(
-                    counter: cellData.counter,
+                    counter: ref.read(localCounter),
                     classname: textEditingController.text,
                   );
                   ref.read(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
@@ -148,17 +102,15 @@ class DetailScreen extends ConsumerWidget {
                 },
                 child: const Text('保存'),
               ),
+              // 削除ボタンはそのまま
               ElevatedButton(
-                 onPressed: () {
-                 // セルデータをリセット
-                 ref.read(timetableDataProvider.notifier).resetCellData(cellIndex);
-                 Navigator.pop(context);
-                  },
-                  child: const Text('削除'),
-                  style: ElevatedButton.styleFrom(
-                 backgroundColor: Colors.red, // ボタンの背景色を赤に設定
-                 ),
-                 ),
+                onPressed: () {
+                  ref.read(timetableDataProvider.notifier).resetCellData(cellIndex);
+                  Navigator.pop(context);
+                },
+                child: const Text('削除'),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              ),
             ],
           ),
         ),
