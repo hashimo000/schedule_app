@@ -29,7 +29,6 @@ final timetableDataProvider = StateNotifierProvider<TimetableDataNotifier, List<
   return TimetableDataNotifier();
 });
 
-// DetailScreenクラス内の変更点
 class DetailScreen extends ConsumerWidget {
   final int cellIndex;
   final TextEditingController textEditingController = TextEditingController();
@@ -38,7 +37,7 @@ class DetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cellData = ref.watch(timetableDataProvider.select((state) => state[cellIndex]));
-    textEditingController.text = cellData.classname; // 初期値を設定
+    textEditingController.text = cellData.classname;
 
     // 欠席回数のローカル状態を管理するためのStateProviderを作成
     final localCounter = StateProvider<int>((ref) => cellData.counter);
@@ -63,7 +62,6 @@ class DetailScreen extends ConsumerWidget {
                   return Text('欠席回数: $counter', style: TextStyle(fontSize: 24));
                 },
               ),
-              // 以下のRowとFloatingActionButtonは、ローカル状態のカウンターを更新するように変更
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -102,7 +100,6 @@ class DetailScreen extends ConsumerWidget {
                 },
                 child: const Text('保存'),
               ),
-              // 削除ボタンはそのまま
               ElevatedButton(
                 onPressed: () {
                   ref.read(timetableDataProvider.notifier).resetCellData(cellIndex);
