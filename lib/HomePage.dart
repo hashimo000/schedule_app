@@ -34,28 +34,15 @@ class _TimetableScreenState extends State<TimetableScreen> {
   
     return Scaffold(
       appBar: AppBar(
-        title: const Text('落単回避アプリ'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-             
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.arrow_downward),
-            onPressed: () {
-           
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              
-            },
-          ),
-        ],
-      ),
+       title: const Text(
+              '落単回避アプリ',
+       style: TextStyle(
+      fontSize: 20, // フォントサイズを20に設定
+      fontWeight: FontWeight.bold, // フォントを太く設定
+    ),
+  ),
+  backgroundColor: Color.fromARGB(255, 246, 108, 2), // AppBarの背景色を設定
+  ),
       body: TimetableGrid(),
     );
   }
@@ -84,7 +71,7 @@ class TimetableGrid extends ConsumerWidget {
           return Container(
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey),
-              color: Colors.blue,
+              color: Color.fromARGB(255, 241, 144, 9), 
             ),
             child: Center(
               child: Text(
