@@ -121,8 +121,6 @@ class TimetableGrid extends ConsumerWidget {
         // 通常のグリッドセルを生成
         return InkWell(
           onTap: () {
-             final cellData = ref.read(timetableDataProvider)[index];
-
             Navigator.push(
               context,
               MaterialPageRoute(
