@@ -134,10 +134,12 @@ class TimetableGrid extends ConsumerWidget {
               ),
                child: Consumer(builder: (context, ref, _) {
               final cellData = ref.watch(timetableDataProvider)[index];
+              final RestLife =5 - cellData.counter;
               return Column(
                 children: <Widget>[
+
                   Text(cellData.classname),
-                  Text('❤️: ${cellData.counter}', style: TextStyle(fontSize: 15)),
+                  Text('❤️: ${RestLife}', style: TextStyle(fontSize: 15)),
                 ],
               );
             }
