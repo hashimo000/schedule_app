@@ -29,15 +29,43 @@ final timetableDataProvider = StateNotifierProvider<TimetableDataNotifier, List<
   return TimetableDataNotifier();
 });
 
-class DetailScreen extends ConsumerWidget {
+class DetailScreen extends ConsumerStatefulWidget {
   final int cellIndex;
-  final TextEditingController textEditingController = TextEditingController();
   DetailScreen({Key? key, required this.cellIndex}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final cellData = ref.watch(timetableDataProvider.select((state) => state[cellIndex]));
-    textEditingController.text = cellData.classname;
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends ConsumerState<DetailScreen> {
+  late TextEditingController textEditingController;
+
+ @override
+@override
+void initState() {
+  super.initState();
+  final cellData = ref.read(timetableDataProvider.select((state) => state[widget.cellIndex]));
+  textEditingController = TextEditingController(text: cellData.classname);
+
+  // テキストフィールドの変更を検知するリスナーを追加
+  textEditingController.addListener(() {
+    setState(() {
+    });
+  });
+}
+
+@override
+void dispose() {
+  textEditingController.removeListener(() {});
+  textEditingController.dispose();
+  super.dispose();
+}
+
+
+  @override
+  Widget build(BuildContext context) {
+    final cellData = ref.watch(timetableDataProvider.select((state) => state[widget.cellIndex]));
+
 
     // 欠席回数のローカル状態を管理するためのStateProviderを作成
     final localCounter = StateProvider<int>((ref) => cellData.counter);
@@ -89,20 +117,22 @@ class DetailScreen extends ConsumerWidget {
                 ],
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: textEditingController.text.isNotEmpty
+                   ?() {
                   // 保存ボタンを押したときに、ローカル状態をグローバル状態に反映
                   final updatedData = TimetableCellData(
                     counter: ref.read(localCounter),
                     classname: textEditingController.text,
                   );
-                  ref.read(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
+                  ref.read(timetableDataProvider.notifier).updateCellData(widget.cellIndex, updatedData);
                   Navigator.pop(context);
-                },
+                } 
+                : null,
                 child: const Text('保存'),
               ),
               ElevatedButton(
                 onPressed: () {
-                  ref.read(timetableDataProvider.notifier).resetCellData(cellIndex);
+                  ref.read(timetableDataProvider.notifier).resetCellData(widget.cellIndex);
                   Navigator.pop(context);
                 },
                 child: const Text('削除'),
