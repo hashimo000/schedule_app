@@ -34,7 +34,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
   
     return Scaffold(
       appBar: AppBar(
-        title: Text('時間割'),
+        title: const Text('落単回避アプリ'),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
