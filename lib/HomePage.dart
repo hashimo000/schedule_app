@@ -121,26 +121,24 @@ class TimetableGrid extends ConsumerWidget {
         // 通常のグリッドセルを生成
         
         return InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DetailScreen(cellIndex: index, ),
-              ),
-            );
-          },
-          
-           child: Consumer(builder: (context, ref, _) {
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailScreen(cellIndex: index),
+      ),
+    );
+  },
+  child: Consumer(builder: (context, ref, _) {
     final cellData = ref.watch(timetableDataProvider)[index];
-    final int RestLife = 5 - cellData.counter; 
+    final int RestLife = 5 - cellData.counter;
 
-    // '❤️: $RestLife'のテキストの色をRestLifeの値に基づいて決定
     Color lifeTextColor = RestLife == 5 ? Colors.black :
                           RestLife == 4 ? Colors.blue : 
                           RestLife == 3 ? Colors.green : 
-                          RestLife == 2 ? Color.fromARGB(255, 251, 190, 8) :
-                          RestLife == 1 ? Colors.red :
-                          RestLife == 0 ? Colors.red :
+                          RestLife == 2 ? Color.fromARGB(255, 251, 190, 8) : 
+                          RestLife == 1 ? Colors.red : 
+                          RestLife == 0 ? Colors.red : 
                           Colors.black; // デフォルト
 
     return Container(
@@ -149,24 +147,28 @@ class TimetableGrid extends ConsumerWidget {
       ),
       child: Column(
         children: <Widget>[
-          Text(
-            cellData.classname,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
+          if (cellData.classname.isNotEmpty) 
+            Text(
+              cellData.classname,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
+          if (cellData.classname.isNotEmpty)
+            Text(
               RestLife == 0 ? '落単' : '❤️: $RestLife',
-            style: TextStyle(
-              fontSize: 15,
-              color: lifeTextColor, 
-              fontWeight: FontWeight.bold
+              style: TextStyle(
+                fontSize: 15,
+                color: lifeTextColor,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
         ],
       ),
     );
-  }));
+  }),
+);
+
         }
         return Container(); // 空のコンテナまたは他の適切なウィジェットを返す
      },
