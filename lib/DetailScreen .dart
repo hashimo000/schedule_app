@@ -76,25 +76,6 @@ class DetailScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('授業の追加情報'),
-      actions: <Widget>[
-          TextButton(
-          onPressed: () {
-           final updatedData = TimetableCellData(
-           counter: cellData.counter,
-           classname: textEditingController.text,
-        );
-        ref.read(timetableDataProvider.notifier).updateCellData(cellIndex, updatedData);
-        Navigator.pop(context);
-      },
-      child: const Text('保存',style: TextStyle(
-      fontSize: 20, 
-       ),),
-      style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white, // テキストの色
-        
-      ),
-    ),
-  ],
               ),
       body: Center(
         child: Padding(
