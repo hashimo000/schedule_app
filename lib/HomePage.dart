@@ -37,7 +37,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
     return Scaffold(
       appBar: AppBar(
        title: const Text(
-              '落単回避アプリ',
+              '落単回避',
        style: TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold, 

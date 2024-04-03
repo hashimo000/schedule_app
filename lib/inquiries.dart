@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InquiriesPage extends StatelessWidget {
-  final Uri url = Uri.parse('https://forms.gle/QyrNd6jFdikaPaLb7'); 
-  final Uri url2 = Uri.parse('https://www.termsfeed.com/live/f268ae8b-64b3-4246-90f4-e2f644dd9cb5'); 
+  final Uri url = Uri.parse('https://forms.gle/tkctwq5irnBUKcNz7'); 
 
   InquiriesPage({super.key});
 
@@ -30,10 +29,7 @@ class InquiriesPage extends StatelessWidget {
                           child: const Text('お問い合わせ'),
                         ),
                         const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () => _launchUrl(url2), 
-                          child: const Text('プライバシーサポート'),
-                        ),
+                       
                       ],
                     ),
                   ),
