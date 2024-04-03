@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'DetailScreen .dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:schedule/inquiries.dart';
 class MyHomePage extends StatefulWidget {
 
   const MyHomePage({super.key});
