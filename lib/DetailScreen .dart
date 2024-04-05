@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';// 入力制限用
+import 'package:schedule/database.dart';
+
+final appDatabaseProvider = Provider<AppDatabase>((ref) {
+  final database = AppDatabase(openConnection());
+  return database;
+});
+
+class EVENTS {
+  final int id;
+  String classname;
+  int absenceCount;
+
+  EVENTS({
+    required this.id,
+    required this.classname,
+    required this.absenceCount,
+  });
+}
+
 class TimetableCellData {
   int counter;
   String classname;
@@ -65,7 +84,7 @@ void dispose() {
   @override
   Widget build(BuildContext context) {
     final cellData = ref.watch(timetableDataProvider.select((state) => state[widget.cellIndex]));
-
+     final database = ref.watch(appDatabaseProvider);
 
     // 欠席回数のローカル状態を管理するためのStateProviderを作成
     final localCounter = StateProvider<int>((ref) => cellData.counter);
@@ -126,13 +145,15 @@ void dispose() {
               ),
               ElevatedButton(
                 onPressed: textEditingController.text.isNotEmpty
-                   ?() {
+                   ?() async{
                   // 保存ボタンを押したときに、ローカル状態をグローバル状態に反映
                   final updatedData = TimetableCellData(
                     counter: ref.read(localCounter),
                     classname: textEditingController.text,
                   );
                   ref.read(timetableDataProvider.notifier).updateCellData(widget.cellIndex, updatedData);
+                      // データベースに追加
+                  await database.addEvent(updatedData.classname, updatedData.counter);
                   Navigator.pop(context);
                 } 
                 : null,
