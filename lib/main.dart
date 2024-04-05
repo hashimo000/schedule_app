@@ -2,15 +2,19 @@ import 'package:schedule/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule/inquiries.dart';
+import 'package:schedule/database.dart';
 void main() {
+   WidgetsFlutterBinding.ensureInitialized();
+  final database = AppDatabase(openConnection());
   runApp( ProviderScope(
-    child: MyApp()
+    child: MyApp(database: database)
   ));
 }
 final bottomIndexProvider = StateProvider<int>((ref) => 0);
 class Root extends ConsumerWidget {
-  const Root({super.key});
-
+   
+  const Root({super.key, required this.database});
+final AppDatabase database; 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // bottomIndexProviderを監視して、その値を取得します。
@@ -44,7 +48,7 @@ class Root extends ConsumerWidget {
       },
     );
     final pages =[
-      MyHomePage(),
+      MyHomePage(database: database),
       InquiriesPage(),
     ];
 
@@ -58,7 +62,9 @@ class Root extends ConsumerWidget {
 }
 
 class MyApp extends ConsumerWidget {
-   MyApp({super.key});
+  final AppDatabase database;
+
+  const MyApp({super.key , required this.database});
   @override
   Widget build(BuildContext context, WidgetRef ref) {    
     return MaterialApp( 
@@ -66,7 +72,8 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Root(),
+      home: 
+       Root(database: database),
       
     );
   }

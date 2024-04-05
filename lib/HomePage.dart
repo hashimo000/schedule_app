@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'DetailScreen .dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:schedule/database.dart';
 class MyHomePage extends StatefulWidget {
 
-  const MyHomePage({super.key});
-
+  const MyHomePage({super.key , required this.database});
+final AppDatabase database; 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
