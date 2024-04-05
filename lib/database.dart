@@ -27,11 +27,11 @@ class AppDatabase extends _$AppDatabase {
 
   Future<List<Event>> get allTodoEntries => select(events).get();
  
-  Future<int> addTodo(String content) {
+  Future<int> addEvent(String content,int absenceCount) {
     return into(events).insert(EventsCompanion(
 
       className: Value(content),
-      absenceCount: Value(0),
+      absenceCount: Value(absenceCount),
       ));
   }
 }
