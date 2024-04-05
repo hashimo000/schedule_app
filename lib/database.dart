@@ -9,7 +9,7 @@ import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 part 'database.g.dart';
 @DataClassName('Event')
 class Events extends Table {
-    IntColumn get id => integer().autoIncrement()();
+  IntColumn get id => integer().autoIncrement()();
   TextColumn get className => text().withLength(min: 1, max: 100)();
   IntColumn get absenceCount => integer().withDefault(const Constant(0))();
 }
@@ -20,6 +20,20 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1;
+  
+  Stream<List<Event>> watchEntries() {
+    return (select(events)).watch();
+  }
+
+  Future<List<Event>> get allTodoEntries => select(events).get();
+ 
+  Future<int> addTodo(String content) {
+    return into(events).insert(EventsCompanion(
+
+      className: Value(content),
+      absenceCount: Value(0),
+      ));
+  }
 }
 
 LazyDatabase openConnection() {
