@@ -25,7 +25,7 @@ class AppDatabase extends _$AppDatabase {
     return (select(events)).watch();
   }
 
-  Future<List<Event>> get allTodoEntries => select(events).get();
+ Future<List<Event>> get allEvents => select(events).get();
  
   Future<int> addEvent(String content,int absenceCount) {
     return into(events).insert(EventsCompanion(
