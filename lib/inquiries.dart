@@ -11,7 +11,7 @@ class InquiriesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('その他'),
-        backgroundColor: Color.fromARGB(255, 246, 108, 2), 
+        backgroundColor: Color.fromARGB(255, 7, 7, 6), 
       ),
       body: Column(
         children: <Widget>[
