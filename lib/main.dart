@@ -29,7 +29,7 @@ final AppDatabase database;
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.question_answer),
-        label: 'その他',
+        label: 'お問い合わせ',
         
       ),
     ];
