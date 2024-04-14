@@ -34,8 +34,19 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
+  static const VerificationMeta _rowMeta = const VerificationMeta('row');
   @override
-  List<GeneratedColumn> get $columns => [id, className, absenceCount];
+  late final GeneratedColumn<int> row = GeneratedColumn<int>(
+      'row', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _columnMeta = const VerificationMeta('column');
+  @override
+  late final GeneratedColumn<int> column = GeneratedColumn<int>(
+      'column', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, className, absenceCount, row, column];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -61,6 +72,18 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
           absenceCount.isAcceptableOrUnknown(
               data['absence_count']!, _absenceCountMeta));
     }
+    if (data.containsKey('row')) {
+      context.handle(
+          _rowMeta, row.isAcceptableOrUnknown(data['row']!, _rowMeta));
+    } else if (isInserting) {
+      context.missing(_rowMeta);
+    }
+    if (data.containsKey('column')) {
+      context.handle(_columnMeta,
+          column.isAcceptableOrUnknown(data['column']!, _columnMeta));
+    } else if (isInserting) {
+      context.missing(_columnMeta);
+    }
     return context;
   }
 
@@ -76,6 +99,10 @@ class $EventsTable extends Events with TableInfo<$EventsTable, Event> {
           .read(DriftSqlType.string, data['${effectivePrefix}class_name'])!,
       absenceCount: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}absence_count'])!,
+      row: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}row'])!,
+      column: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}column'])!,
     );
   }
 
@@ -89,14 +116,22 @@ class Event extends DataClass implements Insertable<Event> {
   final int id;
   final String className;
   final int absenceCount;
+  final int row;
+  final int column;
   const Event(
-      {required this.id, required this.className, required this.absenceCount});
+      {required this.id,
+      required this.className,
+      required this.absenceCount,
+      required this.row,
+      required this.column});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['class_name'] = Variable<String>(className);
     map['absence_count'] = Variable<int>(absenceCount);
+    map['row'] = Variable<int>(row);
+    map['column'] = Variable<int>(column);
     return map;
   }
 
@@ -105,6 +140,8 @@ class Event extends DataClass implements Insertable<Event> {
       id: Value(id),
       className: Value(className),
       absenceCount: Value(absenceCount),
+      row: Value(row),
+      column: Value(column),
     );
   }
 
@@ -115,6 +152,8 @@ class Event extends DataClass implements Insertable<Event> {
       id: serializer.fromJson<int>(json['id']),
       className: serializer.fromJson<String>(json['className']),
       absenceCount: serializer.fromJson<int>(json['absenceCount']),
+      row: serializer.fromJson<int>(json['row']),
+      column: serializer.fromJson<int>(json['column']),
     );
   }
   @override
@@ -124,67 +163,99 @@ class Event extends DataClass implements Insertable<Event> {
       'id': serializer.toJson<int>(id),
       'className': serializer.toJson<String>(className),
       'absenceCount': serializer.toJson<int>(absenceCount),
+      'row': serializer.toJson<int>(row),
+      'column': serializer.toJson<int>(column),
     };
   }
 
-  Event copyWith({int? id, String? className, int? absenceCount}) => Event(
+  Event copyWith(
+          {int? id,
+          String? className,
+          int? absenceCount,
+          int? row,
+          int? column}) =>
+      Event(
         id: id ?? this.id,
         className: className ?? this.className,
         absenceCount: absenceCount ?? this.absenceCount,
+        row: row ?? this.row,
+        column: column ?? this.column,
       );
   @override
   String toString() {
     return (StringBuffer('Event(')
           ..write('id: $id, ')
           ..write('className: $className, ')
-          ..write('absenceCount: $absenceCount')
+          ..write('absenceCount: $absenceCount, ')
+          ..write('row: $row, ')
+          ..write('column: $column')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, className, absenceCount);
+  int get hashCode => Object.hash(id, className, absenceCount, row, column);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Event &&
           other.id == this.id &&
           other.className == this.className &&
-          other.absenceCount == this.absenceCount);
+          other.absenceCount == this.absenceCount &&
+          other.row == this.row &&
+          other.column == this.column);
 }
 
 class EventsCompanion extends UpdateCompanion<Event> {
   final Value<int> id;
   final Value<String> className;
   final Value<int> absenceCount;
+  final Value<int> row;
+  final Value<int> column;
   const EventsCompanion({
     this.id = const Value.absent(),
     this.className = const Value.absent(),
     this.absenceCount = const Value.absent(),
+    this.row = const Value.absent(),
+    this.column = const Value.absent(),
   });
   EventsCompanion.insert({
     this.id = const Value.absent(),
     required String className,
     this.absenceCount = const Value.absent(),
-  }) : className = Value(className);
+    required int row,
+    required int column,
+  })  : className = Value(className),
+        row = Value(row),
+        column = Value(column);
   static Insertable<Event> custom({
     Expression<int>? id,
     Expression<String>? className,
     Expression<int>? absenceCount,
+    Expression<int>? row,
+    Expression<int>? column,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (className != null) 'class_name': className,
       if (absenceCount != null) 'absence_count': absenceCount,
+      if (row != null) 'row': row,
+      if (column != null) 'column': column,
     });
   }
 
   EventsCompanion copyWith(
-      {Value<int>? id, Value<String>? className, Value<int>? absenceCount}) {
+      {Value<int>? id,
+      Value<String>? className,
+      Value<int>? absenceCount,
+      Value<int>? row,
+      Value<int>? column}) {
     return EventsCompanion(
       id: id ?? this.id,
       className: className ?? this.className,
       absenceCount: absenceCount ?? this.absenceCount,
+      row: row ?? this.row,
+      column: column ?? this.column,
     );
   }
 
@@ -200,6 +271,12 @@ class EventsCompanion extends UpdateCompanion<Event> {
     if (absenceCount.present) {
       map['absence_count'] = Variable<int>(absenceCount.value);
     }
+    if (row.present) {
+      map['row'] = Variable<int>(row.value);
+    }
+    if (column.present) {
+      map['column'] = Variable<int>(column.value);
+    }
     return map;
   }
 
@@ -208,7 +285,9 @@ class EventsCompanion extends UpdateCompanion<Event> {
     return (StringBuffer('EventsCompanion(')
           ..write('id: $id, ')
           ..write('className: $className, ')
-          ..write('absenceCount: $absenceCount')
+          ..write('absenceCount: $absenceCount, ')
+          ..write('row: $row, ')
+          ..write('column: $column')
           ..write(')'))
         .toString();
   }
