@@ -54,7 +54,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
 class TimetableGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
- 
+
     int gridStateRows = 8; // 行数
     int gridStateColumns = 7; // 列数（曜日 + 時間列）
 
@@ -65,9 +65,12 @@ class TimetableGrid extends ConsumerWidget {
       ),
       itemCount: gridStateRows * gridStateColumns,
       itemBuilder: (context, index) {
-        int x, y = 0;
-        x = (index / gridStateColumns).floor();
-        y = (index % gridStateColumns);
+        int x = (index / gridStateColumns).floor();
+        int y = (index % gridStateColumns);
+        int row = (index / gridStateColumns).floor();
+        int column = (index % gridStateColumns);
+          // 行と列を元にデータを取得
+  final cellData = ref.watch(timetableDataProvider)[index];
 
         if (x == 0) {
           // 曜日のヘッダーを生成
