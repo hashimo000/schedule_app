@@ -8,6 +8,7 @@ void main() {
   final database = AppDatabase(openConnection());
   runApp( ProviderScope(
     child: MyApp(database: database)
+    
   ));
 }
 final bottomIndexProvider = StateProvider<int>((ref) => 0);
@@ -68,13 +69,13 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {    
     return MaterialApp( 
+       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: 
        Root(database: database),
-      
     );
   }
 }
