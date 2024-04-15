@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'DetailScreen .dart';
+import 'DetailScreen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:schedule/database.dart';
 class MyHomePage extends StatefulWidget {
