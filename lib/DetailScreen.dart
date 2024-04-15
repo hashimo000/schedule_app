@@ -123,7 +123,7 @@ void dispose() {
               TextField(
                 controller: textEditingController,
                 decoration: InputDecoration(border: OutlineInputBorder(), labelText: "授業名"),
-                inputFormatters: [LengthLimitingTextInputFormatter(12)],
+                inputFormatters: [LengthLimitingTextInputFormatter(9)],
               ),
               Consumer(
                 builder: (context, ref, _) {
@@ -172,14 +172,24 @@ void dispose() {
                   Navigator.pop(context);
                 } 
                 : null,
-                child: const Text('保存'),
+                child: Text(
+                  '保存',
+                  style: TextStyle(
+                  fontWeight: FontWeight.bold,  // フォントを太くする
+                  ),
+                ),
               ),
               ElevatedButton(
                 onPressed: () {
                   ref.read(timetableDataProvider.notifier).resetCellData(widget.cellIndex);
                   Navigator.pop(context);
                 },
-                child: const Text('削除'),
+                child: Text(
+                '削除',
+                 style: TextStyle(
+                 fontWeight: FontWeight.bold,  // フォントを太くする
+               ),
+              ),
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               ),
             ],
