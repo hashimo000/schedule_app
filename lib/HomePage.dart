@@ -67,11 +67,6 @@ class TimetableGrid extends ConsumerWidget {
       itemBuilder: (context, index) {
         int x = (index / gridStateColumns).floor();
         int y = (index % gridStateColumns);
-        int row = (index / gridStateColumns).floor();
-        int column = (index % gridStateColumns);
-          // 行と列を元にデータを取得
-  final cellData = ref.watch(timetableDataProvider)[index];
-
         if (x == 0) {
           // 曜日のヘッダーを生成
           return Container(
