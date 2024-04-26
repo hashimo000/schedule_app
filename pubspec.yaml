@@ -24,7 +24,7 @@ dependencies:
   drift_dev: ^2.16.0
   flutter_launcher_icons: ^0.13.1
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
   image_path: "assets/icon/iconrakutan.png"
   remove_alpha_ios: true
