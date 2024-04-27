@@ -38,6 +38,24 @@ class AppDatabase extends _$AppDatabase {
       column: Value(column),
       ));
   }
+  Future<void> deleteEvent(int id) async {
+  await (delete(events)..where((tbl) => tbl.id.equals(id))).go();
+}
+// 特定の行と列からイベントのIDを取得するためのメソッド
+Future<int?> getEventIdByPosition(int row, int column) async {
+  final query = select(events)
+    ..where((tbl) => tbl.row.equals(row) & tbl.column.equals(column))
+    ..limit(1);
+  final result = await query.getSingleOrNull();
+  return result?.id;
+}
+Future<void> deleteEventsByPosition(int row, int column) async {
+  await (delete(events)
+    ..where((tbl) => tbl.row.equals(row) & tbl.column.equals(column))
+  ).go();
+}
+
+
 }
 LazyDatabase openConnection() {
   return LazyDatabase(() async {
