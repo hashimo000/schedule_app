@@ -180,8 +180,13 @@ void dispose() {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  ref.read(timetableDataProvider.notifier).resetCellData(widget.cellIndex);
+                onPressed: ()async {
+                   // まず、対応するイベントのIDを取得します
+                   // セルの行と列を基にイベントのIDを取得
+    int row = widget.cellIndex ~/ 7;  // 7は列数
+    int column = widget.cellIndex % 7;
+    await database.deleteEventsByPosition(row, column); // 修正: 特定の行と列のすべてのイベントを削除
+    ref.read(timetableDataProvider.notifier).resetCellData(widget.cellIndex);
                   Navigator.pop(context);
                 },
                 child: Text(
