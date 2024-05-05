@@ -67,5 +67,5 @@ https://github.com/hashimo000/schedule_app/assets/103234756/2488b7bd-3de2-49d3-b
 ## App Store にアプリをリリースしました！URLをクリックしてダウンロードしてください！
 https://apps.apple.com/jp/app/%E8%90%BD%E5%8D%98%E5%9B%9E%E9%81%BF/id6497333664
 
-## Google Playにアプリをリリース！URLをクリック！
-準備中
+## Google Playにアプリをリリース！URLをクリックしてダウンロードしてください！
+https://play.google.com/store/apps/details?id=com.hashimoto.schedule
