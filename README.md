@@ -12,6 +12,7 @@
 - Flutter 3.19.5
 -  Dart 3.3.3 
 ## 使用技術
+- Dart
 - Flutter
 - sqflite
 - git
