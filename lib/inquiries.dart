@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InquiriesPage extends StatelessWidget {
-  final Uri url = Uri.parse('https://forms.gle/tkctwq5irnBUKcNz7'); 
+  final Uri url = Uri.parse('https://forms.gle/seXgdamm96PTUrPAA'); 
 
   InquiriesPage({super.key});
 
